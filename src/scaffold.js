@@ -1,3 +1,3 @@
 export default function () {
-  return undefined;
+  return {dependencies: ['@actions/core']};
 }
