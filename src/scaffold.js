@@ -1,23 +1,20 @@
-export default function () {
-  const actionsDocumentationLink = 'https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/'
-    + 'creating-a-javascript-action';
+import deepmerge from 'deepmerge';
+import scaffoldMetadata from './metadata';
+import {ACTIONS_DOCUMENTATION_LINK} from './constants';
 
-  return {
-    dependencies: ['@actions/core'],
-    devDependencies: ['@vercel/ncc'],
-    scripts: {build: 'ncc build index.js --license licenses.txt'},
-    nextSteps: [
-      {
-        summary: 'Describe how to use the action in the README',
-        description: `[suggestions from the actions docs](${actionsDocumentationLink}#creating-a-readme)`
-      },
-      {
-        summary: 'Create the action metadata file',
-        description: `[details from the actions docs](${actionsDocumentationLink}#creating-an-action-metadata-file)
-
-be sure to change the \`main\` keyword in your \`action.yml\` file to use the new \`dist/index.js\` file.
-\`main: 'dist/index.js'\``
-      }
-    ]
-  };
+export default async function ({projectRoot}) {
+  return deepmerge(
+    {
+      dependencies: ['@actions/core'],
+      devDependencies: ['@vercel/ncc'],
+      scripts: {build: 'ncc build index.js --license licenses.txt'},
+      nextSteps: [
+        {
+          summary: 'Describe how to use the action in the README',
+          description: `[suggestions from the actions docs](${ACTIONS_DOCUMENTATION_LINK}#creating-a-readme)`
+        }
+      ]
+    },
+    await scaffoldMetadata({projectRoot})
+  );
 }
